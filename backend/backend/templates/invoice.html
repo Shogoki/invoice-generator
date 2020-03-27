@@ -106,9 +106,7 @@
           <td>
             <table>
               <tr>
-                <td>
-                  {{invoice.address | safe }}
-                </td>
+                <td>{{invoice.address.replace("\n", "<br />") | safe }}</td>
 
                 <td>
                   <small

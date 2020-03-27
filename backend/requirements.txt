@@ -2,3 +2,6 @@ ariadne
 flask
 flask_sqlalchemy
 pdfkit
+six
+pymysql
+cryptography

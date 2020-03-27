@@ -12,9 +12,9 @@ from backend import db
 
 class InvoiceItem(Model, db.Model):
     __tablename__ = "invoice_items"
-    _pos = db.Column(db.Integer, primary_key=True)
+    _pos = db.Column(db.Integer, primary_key=True, autoincrement=True)
     _description = db.Column(db.String(100))
-    _amount = db.Column(db.Integer)
+    _amount = db.Column(db.Float)
     _price = db.Column(db.Float)
     _invoice_id = db.Column(db.Integer, db.ForeignKey(
         "invoices._id"), primary_key=True)
@@ -35,7 +35,7 @@ class InvoiceItem(Model, db.Model):
         self.openapi_types = {
             'pos': int,
             'description': str,
-            'amount': int,
+            'amount': float,
             'price': float
         }
 

@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 RUN apt-get update && apt-get install wkhtmltopdf -y
 ADD requirements.txt /usr/src/app
 RUN pip install -r requirements.txt
-ADD schema.graphql /usr/src/app
-ADD backend /usr/src/app
+COPY . /usr/src/app
 
-CMD ['python3', '-m', 'backend']
+CMD ["python3", "-m", "backend"]

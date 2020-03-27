@@ -4,7 +4,6 @@ from ariadne import make_executable_schema, graphql_sync
 from ariadne.constants import PLAYGROUND_HTML
 from flask import Flask, request, jsonify
 from backend.resolvers import resolvers
-from backend.resolve_batcher import ResolveBatcher
 from backend import app, db
 #from backend.models import Invoice, Customer, InvoiceItem
 
@@ -48,4 +47,4 @@ def graphql_server():
 #app = GraphQL(schema, debug=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

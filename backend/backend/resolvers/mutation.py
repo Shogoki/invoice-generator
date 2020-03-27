@@ -39,7 +39,7 @@ def create_invoice(_, info, customerId: int, date: str = None, month: int = None
     # check if customer is available
     customer = Customer.query.filter(Customer._id == customerId).first()
     if customer is  None:
-        return False
+        raise ValueError("Invalid Customer ID: Not Found")
     invoice = Invoice(customerId, month, date)
     db.session.add(invoice)
     db.session.commit()
@@ -60,11 +60,11 @@ def send_invoice(_, info, invoiceId: int):
 
 
 @mutation.field("addInvoiceItem")
-def add_invoice_item(invoiceId: int, description: str, price: float = None, amount: int = 1):
+def add_invoice_item(_, info, invoiceId: int, description: str, price: float = None, amount: int = 1):
 
     invoice = Invoice.query.filter(Invoice._id == invoiceId).first()
     if price is None:
-        price = invoice.customer.default_price
+        price = invoice._customer.defaultPrice
     item = InvoiceItem(description, amount, price)
     invoice._items.append(item)
     db.session.commit()

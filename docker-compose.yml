@@ -4,11 +4,25 @@ services:
   backend:
     image: invoice-manager:${TAG-latest}
     build: ./backend
+    depends_on:
+      - mysql
     environment:
       INVOICE_OWN_ADDRESS: ${INVOICE_OWN_ADDRESS}
       INVOICE_PAYMENT_DAYS: ${INVOICE_PAYMENT_DAYS}
       INVOICE_ACCOUNT_OWNER: ${INVOICE_ACCOUNT_OWNER}
       INVOICE_ACCOUNT_IBAN: ${INVOICE_ACCOUNT_IBAN}
       INVOICE_ACCOUNT_BIC: ${INVOICE_ACCOUNT_BIC}
+      DB_URI: mysql+pymysql://${MYSQL_USER:-backenddb}:${MYSQL_PASSWORD:-K4QCZgvLgQ.aYCk..WHRF9ra8JzUqHnT}@mysql/${MYSQL_DATABASE:-invoice-manager}
     ports:
       - 5000:5000
+  mysql:
+    image: mysql:8.0
+    environment:
+      PORT: 3306
+      # ! passwords listed here are for local development only - NEVER use them in production!
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-d5T.X87vZ>-WET=$R+,rappL=~GGg:zr}
+      MYSQL_USER: ${MYSQL_USER:-backenddb}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-K4QCZgvLgQ.aYCk..WHRF9ra8JzUqHnT}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-invoice-manager}
+    ports:
+      - 3306:3306
