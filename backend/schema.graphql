@@ -1,0 +1,131 @@
+type Customer {
+  _id: ID!
+
+  firstname: String!
+
+  lastname: String!
+
+  street: String!
+
+  zip: String!
+
+  city: String!
+
+  email: String!
+
+  defaultPrice: Float!
+
+  company: String
+
+  invoices: [Invoice]
+}
+
+type Error {
+  code: Int!
+  message: String!
+}
+
+type InvoiceItem {
+  pos: Int!
+
+  description: String!
+
+  amount: Int!
+
+  price: Float!
+
+  invoice: Invoice
+}
+
+type Invoice {
+  customer: Customer!
+
+  month: Int!
+
+  _id: ID!
+
+  date: String!
+
+  total: Float!
+
+  sent: Boolean!
+
+  items: [InvoiceItem]
+
+  address: String
+
+  pdf: String
+}
+
+type Mutation {
+  # Create a new Invoice
+
+  createInvoice(customerId: ID!, date: String, month: Int): Invoice!
+
+  deleteInvoice(invoiceId: ID!): Boolean!
+
+  sendInvoice(invoiceId: ID!): Invoice!
+  # Create a new InvoiceItem
+  # @param ID! invoiceId The id of the invoice to retrieve items from
+  # @param String! description The Description text of the InvoiceItem
+  # @param Int amount billed amount of invoiceItem (Default = 1)
+  # @param Float Price billed price of invoiceItem (Default = Default price for Customer)
+  # @return [InvoiceItem]
+  addInvoiceItem(invoiceId: ID!, description: String!, amount: Int = 1, price: Float): InvoiceItem!
+
+  # Delete a specific invoiceItem
+  # @param ID! invoiceId The id of the invoice to delete
+  # @param Int! itemPos The pos of the item to delete
+  # @return [InvoiceItem]
+  removeInvoiceItem(invoiceId: ID!, itemPos: Int!): Boolean!
+
+  # Create a customer
+  # @param String! firstname first name of customer
+  # @param String! lastname last name of customer
+  # @param String! street street of customer
+  # @param String! zip ZIP Code of customer
+  # @param String! city City of customer
+  # @param String! email email address of customer
+  # @param Float defaultPrice the default price that is billed to the customer
+  # @return [Customer]
+  createCustomer(firstname: String!, lastname: String!, street: String!, zip: String!, city: String!, email: String!, company: String, defaultPrice: Float = 80.00): Customer!
+
+  # Delete a specific customer
+  # @param ID! customerID ID of the customer to delete
+  # @return [Customer]
+  removeCustomer(customerId: ID!): Boolean!
+
+  # modify a customer
+  # @param ID! customerID ID of the customer to update
+  # @param String firstname first name of customer
+  # @param String lastname last name of customer
+  # @param String street street of customer
+  # @param String zip ZIP Code of customer
+  # @param String city City of customer
+  # @param String email email address of customer
+  # @param Float defaultPrice the default price that is billed to the customer
+  # @return [Customer]
+  updateCustomer(customerId: ID!, firstname: String, lastname: String, street: String, zip: String, city: String, email: String, defaultPrice: Float, company: String): Customer!
+}
+
+type Query {
+  # List all invoices
+  # @param Int limit How many items to return at one time Default = 100
+  # @return [[Invoice]]
+  listInvoices(limit: Int = 100): [Invoice]
+
+  # Info for a specific invoice
+  # @param ID! invoiceId The id of the invoice to retrieve
+  # @return [Invoice]
+  getInvoice(invoiceId: ID!): Invoice
+
+  # List all customers
+  # @param Int! limit How many items to return at one time (default 100)
+  # @return [[Customer]]
+  listCustomers(limit: Int = 100): [Customer]
+
+  # Info for a specific customer
+  # @param Float! customerId The id of the customer to retrieve
+  # @return [Customer]
+  getCustomer(customerId: ID!): Customer
+}

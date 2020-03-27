@@ -1,0 +1,204 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Rechnung</title>
+
+    <style>
+      .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        /* padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        */
+        font-size: 16px;
+        line-height: 24px;
+        font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+        color: #555;
+      }
+
+      .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+      }
+
+      .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+      }
+
+      .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+      }
+
+      .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+      }
+
+      .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+      }
+
+      .invoice-box table tr.information table td {
+        padding-bottom: 40px;
+      }
+
+      .invoice-box table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+      }
+
+      .invoice-box table tr.details td {
+        padding-bottom: 20px;
+      }
+
+      .invoice-box table tr.item td {
+        border-bottom: 1px solid #eee;
+      }
+
+      .invoice-box table tr.item.last td {
+        border-bottom: none;
+      }
+
+      .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+      }
+
+      @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+          width: 100%;
+          display: block;
+          text-align: center;
+        }
+
+        .invoice-box table tr.information table td {
+          width: 100%;
+          display: block;
+          text-align: center;
+        }
+      }
+
+      /** RTL **/
+      .rtl {
+        direction: rtl;
+        font-family: Tahoma, "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+      }
+
+      .rtl table {
+        text-align: right;
+      }
+
+      .rtl table tr td:nth-child(2) {
+        text-align: left;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="invoice-box">
+      <table cellpadding="0" cellspacing="0">
+        <tr class="information">
+          <td>
+            <table>
+              <tr>
+                <td>
+                  {{invoice.address | safe }}
+                </td>
+
+                <td>
+                  <small
+                    >Sven Igl <br />
+                    Prischoßstraße 46<br />63755 Alzenau<br />Deutschland<br />Ust-IdNr: DE311279993</small
+                  ><br />
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class="top">
+          <td colspan="2">
+            <table>
+              <tr>
+                <td class="title">
+                  <!--<img src="" style="width:100%; max-width:300px;"> LOGO goes here-->
+                </td>
+
+                <td>
+                  Rechnung Nr.: {{"{}-{}".format(invoice.date.split(".")[-1], invoice.id)}}<br />
+                  Kundennummer: {{invoice._customer_id}}<br />
+                  Rechnungsdatum: {{invoice.date}}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr class="information">
+          <td colspan="2">
+            Die vereinbarte Entwicklungs-/Betreuungs-Leistung Ihrer Website(s) im Leistungsmonat <span id="Month">{{invoice.month}} {{ invoice.date.split(".")[-1] }}</span> berechne Ich Ihnen wie
+            folgt.
+          </td>
+        </tr>
+      </table>
+
+      <table cellpadding="0" cellspacing="0">
+        <tr class="heading">
+          <td>
+            Position
+          </td>
+
+          <td>
+            Bezeichnung
+          </td>
+          <td>
+            Menge
+          </td>
+          <td>
+            Einzelpreis
+          </td>
+          <td>
+            Gesamt
+          </td>
+        </tr>
+        {% for item in invoice._items %}
+        <tr class="item">
+          <td>{{loop.index}}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.amount }}</td>
+          <td>{{item.price }} €</td>
+          <td>{{item.amount * item.price }} €</td>
+        </tr>
+        {% endfor %}
+        <tr class="total">
+          <td>Summe</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <span id="Sum">{{ invoice.total }} €</span>
+          </td>
+        </tr>
+      </table>
+
+      <div>
+        <p><small>In dieser Rechnung ist gemäß 19 (1) UStG keine Umsatzsteuer enthalten.</small></p>
+
+        <p>Bitte zahlen Sie den Rechnungsbetrag von <span id="total">{{ invoice.total }} €</span> binnen 30 Tagen nach Rechnungserhalt auf das folgende Konto:</p>
+
+        <p>
+          Kontoinhaber: Sven Igl <br />
+
+          IBAN: DE89100110012624154053 <br />
+
+          BIC: NTSBDEB1XXX <br />
+
+          Verwendungszweck: Rechnung {{"{}-{}".format(invoice.date.split(".")[-1], invoice.id)}}
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

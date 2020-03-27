@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  backend:
+    image: invoice-manager:${TAG-latest}
+    build: ./backend
+    environment:
+      INVOICE_OWN_ADDRESS: ${INVOICE_OWN_ADDRESS}
+      INVOICE_PAYMENT_DAYS: ${INVOICE_PAYMENT_DAYS}
+      INVOICE_ACCOUNT_OWNER: ${INVOICE_ACCOUNT_OWNER}
+      INVOICE_ACCOUNT_IBAN: ${INVOICE_ACCOUNT_IBAN}
+      INVOICE_ACCOUNT_BIC: ${INVOICE_ACCOUNT_BIC}
+    ports:
+      - 5000:5000

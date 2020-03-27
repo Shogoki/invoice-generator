@@ -1,0 +1,4 @@
+ariadne
+flask
+flask_sqlalchemy
+pdfkit
