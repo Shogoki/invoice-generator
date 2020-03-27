@@ -36,6 +36,10 @@ def create_invoice(_, info, customerId: int, date: str = None, month: int = None
         month = 12 if month == 0 else month
     if date is None:
         date = datetime.now().strftime("%d.%m.%Y")
+    # check if customer is available
+    customer = Customer.query.filter(Customer._id == customerId).first()
+    if customer is  None:
+        return False
     invoice = Invoice(customerId, month, date)
     db.session.add(invoice)
     db.session.commit()
