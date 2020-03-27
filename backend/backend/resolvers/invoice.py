@@ -54,6 +54,9 @@ def resolve_invoice_customer(obj: Invoice, info):
 def resolve_invoice_items(obj: Invoice, info):
     return obj.items
 
+@invoice.field("html")
+def render_html(obj: Invoice, info):
+    return render_template("invoice.html", invoice=obj)
 
 @invoice.field("pdf")
 def render_invoice_pdf(obj: Invoice, info):

@@ -55,6 +55,8 @@ type Invoice {
   address: String
 
   pdf: String
+
+  html: String
 }
 
 type Mutation {
