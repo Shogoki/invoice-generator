@@ -64,8 +64,9 @@ def add_invoice_item(_, info, invoiceId: int, description: str, price: float = N
 
     invoice = Invoice.query.filter(Invoice._id == invoiceId).first()
     if price is None:
-        price = invoice._customer.defaultPrice
-    item = InvoiceItem(description, amount, price)
+        price = invoice._customer.defaultPrice 
+    pos = (max([item.pos for item in invoice._items]) + 1) if len(invoice._items) > 0 else 0
+    item = InvoiceItem(description, amount, price, pos)
     invoice._items.append(item)
     db.session.commit()
     return item

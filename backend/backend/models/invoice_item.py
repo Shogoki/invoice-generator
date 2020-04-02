@@ -12,7 +12,7 @@ from backend import db
 
 class InvoiceItem(Model, db.Model):
     __tablename__ = "invoice_items"
-    _pos = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    _pos = db.Column(db.Integer, primary_key=True)
     _description = db.Column(db.String(100))
     _amount = db.Column(db.Float)
     _price = db.Column(db.Float)
@@ -20,7 +20,7 @@ class InvoiceItem(Model, db.Model):
         "invoices._id"), primary_key=True)
     _invoice = db.relationship("Invoice", back_populates="_items")
 
-    def __init__(self,  description=None, amount=None, price=None):  # noqa: E501
+    def __init__(self,  description=None, amount=None, price=None, pos=None):  # noqa: E501
         """InvoiceItem - a model defined in OpenAPI
 
         :param pos: The pos of this InvoiceItem.  # noqa: E501
@@ -49,6 +49,7 @@ class InvoiceItem(Model, db.Model):
         self._description = description
         self._amount = amount
         self._price = price
+        self._pos = pos
 
     @classmethod
     def from_dict(cls, dikt) -> 'InvoiceItem':
